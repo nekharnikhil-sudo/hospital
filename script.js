@@ -1,32 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('appointmentForm');
-    const successMsg = document.getElementById('successMsg');
 
     form.addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevents page reload on submit
+        e.preventDefault(); // पेज को रीलोड होने से रोकता है
 
-        // Collecting form data into an object
-        const formData = {
-            name: document.getElementById('fullName').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            doctor: document.getElementById('doctor').value,
-            date: document.getElementById('date').value,
-            message: document.getElementById('message').value
-        };
+        // फॉर्म से डेटा कलेक्ट करना
+        const fullName = document.getElementById('fullName').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value || 'Not provided';
+        const doctor = document.getElementById('doctor').value;
+        const date = document.getElementById('date').value;
+        const message = document.getElementById('message').value || 'None';
 
-        // Output data in browser console (for testing)
-        console.log("Patient Appointment Data:", formData);
+        // यहाँ अपना WhatsApp नंबर लिखें (देश के कोड के साथ, जैसे भारत के लिए 91 और आगे नंबर)
+        const hospitalWhatsAppNumber = "918447750016"; // <--- अपना WhatsApp नंबर यहाँ डालें
 
-        // Display success message
-        successMsg.style.display = 'block';
+        // WhatsApp के लिए मैसेज का फॉर्मेट तैयार करना
+        const whatsappMessage = `*New Appointment Request*%0A` +
+                                `----------------------------------%0A` +
+                                `*Patient Name:* ${fullName}%0A` +
+                                `*Phone:* ${phone}%0A` +
+                                `*Email:* ${email}%0A` +
+                                `*Doctor:* ${doctor}%0A` +
+                                `*Date:* ${date}%0A` +
+                                `*Symptoms/Reason:* ${message}`;
 
-        // Reset form fields
+        // WhatsApp URL जनरेट करना
+        const whatsappURL = `https://wa.me/${hospitalWhatsAppNumber}?text=${whatsappMessage}`;
+
+        // यूजर को WhatsApp पर रीडायरेक्ट करना
+        window.open(whatsappURL, '_blank');
+
+        // फॉर्म रीसेट करना
         form.reset();
-
-        // Hide success message automatically after 5 seconds
-        setTimeout(() => {
-            successMsg.style.display = 'none';
-        }, 5000);
     });
 });
